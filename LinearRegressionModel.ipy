@@ -1,0 +1,78 @@
+# import numpy as np
+
+
+# #calculating the mean of x
+# arr1 = [1,2,3] #y
+# arr2 = [4,5,6] #x
+# p = 0
+# for i in range(len([4,5,6])):
+#     p = i + p
+# t = 0
+# for i in range(len([1,2,3])):
+#     t = i + t
+
+# #deviations be xd1 and xd2
+
+# dev1 = [] #deviation about y
+# for i in range(len(arr1)):
+#     x = arr1[i] - p
+#     dev1.append(x)
+
+# dev2 = [] #deviation about x
+# for i in range(len(arr2)):
+#     x = arr2[i] - t
+#     dev1.append(x)
+
+
+# #calculating the slope and constant
+
+# d = 0
+# for i in range(len(arr1)):
+#     d = (arr1[i] - p) * (arr2[i] - t) + d
+
+# f = 0
+# for i in range(len(arr1)):
+#     f = (arr1[i] - p)**2 + f
+
+# m = d/f
+
+# c = p - m * t
+
+# y = m * 45 + c
+
+# print(y)
+
+
+
+
+
+import pandas as pd
+
+# Load the dataset
+url = "https://raw.githubusercontent.com/dataprofessor/data/master/delaney_solubility_with_descriptors.csv"
+data = pd.read_csv(url)
+
+# Selecting the columns for independent and dependent variables
+x_col = 'MolLogP'  # Example independent variable
+y_col = 'logS'  # Example dependent variable
+
+# Calculate means
+x_mean = data[x_col].mean()
+y_mean = data[y_col].mean()
+
+# Calculate deviations
+data['x_dev'] = data[x_col] - x_mean
+data['y_dev'] = data[y_col] - y_mean
+
+# Calculate slope
+numerator = (data['x_dev'] * data['y_dev']).sum()
+denominator = (data['x_dev'] ** 2).sum()
+m = numerator / denominator
+
+# Calculate intercept
+c = y_mean - m * x_mean
+
+# Predict value for a given x (example: 45)
+predicted_y = m * 2 + c
+
+print("Predicted solubility for MolLogP=45:", predicted_y)
